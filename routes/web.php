@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('articles/page/{page}', 'ArticleController@paginate');
 Route::resource('articles', 'ArticleController');

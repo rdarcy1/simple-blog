@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('title')
+    {{ $article->title }}
+@stop
+
 @section('content')
     @include('articles._delete-button', ['articleId' => $article->id])
     <a href="/articles" class="btn btn-default">&lsaquo; Back to all articles</a>

@@ -20,9 +20,27 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::orderBy('published_on', 'desc')->get();
+        $articles = Article::orderBy('published_on', 'desc')->take(5)->get();
 
         return view('articles.index', compact('articles'));
+    }
+
+    /**
+     * Display a paginated listing of the resource.
+     *
+     * @param $page
+     * @return \Illuminate\Http\Response
+     */
+    public function paginate($page)
+    {
+        $perPage = 5;
+
+        $articles = Article::orderBy('published_on', 'desc')
+            ->skip($perPage * $page)
+            ->take($perPage)
+            ->get();
+
+        return view('articles.index', compact('articles', 'page'));
     }
 
     /**

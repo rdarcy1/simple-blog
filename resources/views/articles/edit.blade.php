@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('title')
+    Edit Article
+@stop
+
 @section('content')
     <h1>Edit Article</h1>
 
