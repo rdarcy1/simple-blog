@@ -7,7 +7,7 @@
 @section('content')
     <h1>Create New Article</h1>
 
-    <a href="{{ route('articles.index') }}" class="btn btn-default">&lt; Back to articles</a>
+    @include('articles._back-button')
     <hr>
 
     @include('errors.form-list')

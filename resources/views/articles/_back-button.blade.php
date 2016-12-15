@@ -1,0 +1,1 @@
+<a href="{{ url()->previous() }}" class="btn btn-default">&lsaquo; Back</a>

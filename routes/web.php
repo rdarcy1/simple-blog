@@ -15,5 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('articles/page/{page}', 'ArticleController@paginate');
+Route::get('articles/page/{page}', 'ArticleController@index')->name('articles.page');
+Route::get('articles/{id}/delete', 'ArticleController@confirmDelete')->name('articles.confirmDelete');
 Route::resource('articles', 'ArticleController');

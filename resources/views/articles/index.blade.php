@@ -13,6 +13,7 @@
         <a href="/articles/{{ $article->id }}">
             <h2>{{ $article->title }}</h2>
         </a>
+        <h5>{{ $article->published_on }}</h5>
         <p>{{ $article->body }}</p>
 
         @unless($loop->last)
@@ -20,8 +21,14 @@
         @endunless
     @endforeach
 
-    @if (isset($page))
-        <h5>Page {{ $page }}</h5>
-    @endif
+    <ul class="pagination">
+        @for ($page = 1; $page <= $numberOfArticles; $page++)
+            <li @if ($currentPage == $page) class="active" @endif >
+                <a href="{{ route('articles.page', $page) }}" {{ $page }}>
+                    {{ $page }}
+                </a>
+            </li>
+        @endfor
+    </ul>
 
 @stop
