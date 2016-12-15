@@ -6,7 +6,7 @@
 
 @section('content')
     @include('articles._delete-button', ['articleId' => $article->id])
-    @include('articles._back-button')
+    @include('articles._back-button', ['action' => route('articles.index')])
     <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-default">Edit</a>
 
 

@@ -14,7 +14,8 @@
     @include('articles._form', [
         'formMethod'        => 'PATCH',
         'formAction'        => route('articles.update', $article->id),
-        'submitButtonText'  => 'Update Article'
+        'submitButtonText'  => 'Update Article',
+        'cancelAction'      => route('articles.show', $article->id)
     ])
 
 @stop

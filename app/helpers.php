@@ -10,3 +10,15 @@ function methodMustBeSpoofed($method)
 {
     return in_array(strtoupper($method), ['PUT', 'PATCH', 'DELETE']);
 }
+
+/**
+ * Limit $input to range defined by $min and $max.
+ * 
+ * @param $input
+ * @param $min
+ * @param $max
+ * @return mixed
+ */
+function clamp($input, $min, $max) {
+    return max($min, min($max, $input));
+}

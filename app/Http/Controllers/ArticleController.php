@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 /**
  * Class ArticleController
+ *
  * @package App\Http\Controllers
  */
 class ArticleController extends Controller
@@ -23,14 +24,16 @@ class ArticleController extends Controller
     public function index($currentPage = 1)
     {
         $perPage = 5;
-        $numberOfArticles = ceil(count(Article::all()) / $perPage);
+        $numberOfPages = ceil(count(Article::all()) / $perPage);
+
+        $currentPage = clamp($currentPage, 1, $numberOfPages);
 
         $articles = Article::orderBy('published_on', 'desc')
             ->skip($perPage * ($currentPage - 1))
             ->take($perPage)
             ->get();
 
-        return view('articles.index', compact('articles', 'currentPage', 'numberOfArticles'));
+        return view('articles.index', compact('articles', 'currentPage', 'numberOfPages'));
     }
 
     /**
@@ -53,6 +56,8 @@ class ArticleController extends Controller
     {
         $article = new Article($request->all());
         $article->save();
+
+        Session::flash('flash_message', 'Article created.');
 
         return redirect('/articles/' . $article->id);
     }
@@ -87,28 +92,30 @@ class ArticleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param  int                      $id
      * @return Redirect
      */
     public function update(ArticleRequest $request, $id)
     {
         $article = Article::findOrFail($id);
-
         $article->fill($request->all())->save();
+
+        Session::flash('flash_message', 'Article updated.');
 
         return redirect(route('articles.show', $id));
     }
 
     /**
      * Remove the specified resource from storage.
+     * Only delete if confirmed parameter is sent.
      *
      * @param Request $request
-     * @param  int $id
+     * @param  int    $id
      * @return Redirect
      */
     public function destroy(Request $request, $id)
     {
-        if (!$request->input('confirmed')) {
+        if ( ! $request->input('confirmed')) {
             return redirect(route('articles.confirmDelete', $id));
         }
 

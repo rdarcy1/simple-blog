@@ -5,7 +5,9 @@
 @stop
 
 @section('content')
-    <h1>Simple Blog</h1>
+    <a href="/">
+        <h1>Simple Blog</h1>
+    </a>
 
     <a href="{{ route('articles.create') }}" class="btn btn-default">Create new article</a>
 
@@ -22,7 +24,7 @@
     @endforeach
 
     <ul class="pagination">
-        @for ($page = 1; $page <= $numberOfArticles; $page++)
+        @for ($page = 1; $page <= $numberOfPages; $page++)
             <li @if ($currentPage == $page) class="active" @endif >
                 <a href="{{ route('articles.page', $page) }}" {{ $page }}>
                     {{ $page }}

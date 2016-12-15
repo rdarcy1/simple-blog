@@ -31,7 +31,7 @@
 
     <div class="form-group">
         <button type="submit" class="btn btn-default">{{ $submitButtonText or 'Submit' }}</button>
-        <a href="{{ url()->previous() }}" class="btn btn-default">Cancel</a>
+        <a href="{{ $cancelAction or url()->previous() }}" class="btn btn-default">Cancel</a>
     </div>
 
 </form>
