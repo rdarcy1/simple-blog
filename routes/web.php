@@ -16,3 +16,8 @@ Route::get('/', 'ArticleController@index');
 Route::get('articles/page/{page}', 'ArticleController@index')->name('articles.page');
 Route::get('articles/{id}/delete', 'ArticleController@confirmDelete')->name('articles.confirmDelete');
 Route::resource('articles', 'ArticleController');
+
+Route::auth();
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

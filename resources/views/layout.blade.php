@@ -13,6 +13,12 @@
 <body>
 
 <div class="container jumbotron col-md-8 col-md-offset-2">
+    <div class="row">
+        <div class="col-md-12">
+            <p>Logged in as {{ Request::user()->name }}</p>
+        </div>
+    </div>
+
     @if(Session::has('flash_message'))
         <div class="alert alert-success">
             {{ Session::get('flash_message') }}

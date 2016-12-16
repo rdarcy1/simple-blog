@@ -11,7 +11,7 @@
 
 
     <h2>{{ $article->title }}</h2>
-    <h5>Published on {{ $article->published_on }}</h5>
+    <h5>Published on <strong>{{ $article->published_on }}</strong> by <strong>{{ $article->user->name }}</strong></h5>
     <hr>
     <p>{{ $article->body }}</p>
 @stop

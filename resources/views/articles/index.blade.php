@@ -15,7 +15,8 @@
         <a href="/articles/{{ $article->id }}">
             <h2>{{ $article->title }}</h2>
         </a>
-        <h5>{{ $article->published_on }}</h5>
+
+        <h5>Published on <strong>{{ $article->published_on }}</strong> by <strong>{{ $article->user->name }}</strong></h5>
         <p>{{ $article->body }}</p>
 
         @unless($loop->last)

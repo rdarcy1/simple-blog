@@ -7,6 +7,7 @@ use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ArticleController
@@ -55,7 +56,7 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request)
     {
         $article = new Article($request->all());
-        $article->save();
+        Auth::user()->articles()->save($article);
 
         Session::flash('flash_message', 'Article created.');
 
@@ -125,6 +126,12 @@ class ArticleController extends Controller
         return redirect(route('articles.index'));
     }
 
+    /**
+     * Require confirmation before deleting an article.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function confirmDelete($id)
     {
         $article = Article::findOrFail($id);

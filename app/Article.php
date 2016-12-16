@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Article extends Model
 {
-    protected $fillable = ['title', 'body', 'published_on'];
+    protected $fillable = ['user_id', 'title', 'body', 'published_on'];
 
     /**
      * Return only published articles.
@@ -52,6 +52,16 @@ class Article extends Model
     public function getPublishedOnAttribute($date)
     {
         return Carbon::createFromFormat('Y-n-j G:i:s', $date)->format('Y-m-d');
+    }
+
+    /**
+     * An author is a user who owns the article.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

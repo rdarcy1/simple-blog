@@ -23,10 +23,11 @@
       "database"
     ],
     "files": [
-      "app/helpers.php"
+      "app/Libraries/helpers.php"
     ],
     "psr-4": {
-      "App\\": "app/"
+      "App\\": "app/",
+      "App\\Libraries\\": "app/Libraries"
     }
   },
   "autoload-dev": {
