@@ -21,7 +21,7 @@ class UserArticleSeeder extends Seeder
         DB::statement("SET foreign_key_checks=1");
 
         $numberOfUsers = 10;
-        $numberOfArticles = new Deviate(10, 0.3, true);
+        $numberOfArticles = Deviate::make(10, 0.3, true);
 
         // Create users and random amount of articles that belong to each user
         factory(User::class, $numberOfUsers)->create()->each(
