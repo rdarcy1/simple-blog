@@ -55,7 +55,7 @@ class Deviate
     /**
      * @return mixed
      */
-    public function centre()
+    public function getCentre()
     {
         return $this->centre;
     }
@@ -73,7 +73,7 @@ class Deviate
     /**
      * @return mixed
      */
-    public function deviation()
+    public function getDeviation()
     {
         return $this->deviation;
     }
@@ -129,30 +129,92 @@ class Deviate
     }
 
     /**
-     * Return random integer between minimum and maximum values, according to supplied deviation.
+     * Return random integer between minimum and maximum values, using a
+     * linear/rectangular probability density function.
      *
      * @return int
      */
-    public function random()
+    public function randomLinear()
     {
         return rand($this->min(), $this->max());
+    }
+
+    /**
+     * Return a random integer between min and max values, using a triangular
+     * probability density function.
+     *
+     * @return int
+     */
+    public function randomTriangular()
+    {
+        // Random float between 0 and 1
+        $u = rand() / getrandmax();
+        $a = $this->min();
+        $b = $this->max();
+        $c = $this->centre;
+        $Fc = ($c - $a) / ($b - $a);
+
+        if (0 < $u && $u < $Fc) {
+            return $a + sqrt($u * ($b - $a) * ($c - $a));
+        } else {
+            return $b - sqrt((1 - $u) * ($b - $a) * ($b - $c));
+        }
+    }
+
+    /**
+     * Return function name based on probability density function alias.
+     *
+     * @param $alias
+     * @return string
+     */
+    protected function getFunctionByAlias($alias)
+    {
+        switch (strtolower($alias)) {
+            case 'triangular':
+            case 'tpdf':
+                return 'randomTriangular';
+                break;
+            case 'linear':
+            case 'rectangular':
+            case 'rpdf':
+            default:
+                return 'randomLinear';
+                break;
+        }
     }
 
     /**
      * Return an array of random integers between min and max values.
      * Size of array specified by function parameter.
      *
-     * @param mixed $numberOfValues
+     * @param int   $numberOfValues
+     * @param mixed $pdf
      * @return array
      */
-    public function randomArray($numberOfValues)
+    public function generate($numberOfValues = 1, $pdf = 'linear')
     {
         $random = [];
+        $function = $this->getFunctionByAlias($pdf);
 
         for ($n = 0; $n < $numberOfValues; $n++) {
-            $random[] = $this->random();
+            $random[] = $this->$function();
         }
 
         return $random;
     }
+
+    /**
+     * Generate single random number.
+     *
+     * @param string $pdf
+     * @return int
+     */
+    public function generateSingle($pdf = 'linear')
+    {
+        $function = $this->getFunctionByAlias($pdf);
+
+        return $this->$function();
+    }
+
+
 }

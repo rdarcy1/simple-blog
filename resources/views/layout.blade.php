@@ -15,7 +15,9 @@
 <div class="container jumbotron col-md-8 col-md-offset-2">
     <div class="row">
         <div class="col-md-12">
-            <p>Logged in as {{ Request::user()->name }}</p>
+            @if (Request::user())
+                <p>Logged in as {{ Request::user()->name }}</p>
+            @endif
         </div>
     </div>
 

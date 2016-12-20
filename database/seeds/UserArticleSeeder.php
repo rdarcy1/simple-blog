@@ -26,7 +26,7 @@ class UserArticleSeeder extends Seeder
         // Create users and random amount of articles that belong to each user
         factory(User::class, $numberOfUsers)->create()->each(
             function ($user) use ($numberOfArticles) {
-                foreach (range(1, $numberOfArticles->random()) as $x) {
+                foreach (range(1, $numberOfArticles->randomTriangular()) as $x) {
                     $user->articles()->save(factory(Article::class)->make());
                 }
             });

@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Article
+ *
  * @package App
  */
 class Article extends Model
 {
+    /**
+     * The attributes which are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['user_id', 'title', 'body', 'published_on'];
 
     /**
