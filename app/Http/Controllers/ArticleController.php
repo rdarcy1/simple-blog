@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Auth;
  */
 class ArticleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['only' => 'create']);
+    }
+
     /**
      * Display a paginated listing of articles.
      *
@@ -66,44 +72,39 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param Article $article
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Article $article)
     {
-        $article = Article::findOrFail($id);
-
         return view('articles.show', compact('article'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param Article $article
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        $article = Article::findOrFail($id);
-
         return view('articles.edit', compact('article'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
+     * @param ArticleRequest|Request $request
+     * @param Article                $article
      * @return Redirect
      */
-    public function update(ArticleRequest $request, $id)
+    public function update(ArticleRequest $request, Article $article)
     {
-        $article = Article::findOrFail($id);
         $article->fill($request->all())->save();
 
         Session::flash('flash_message', 'Article updated.');
 
-        return redirect(route('articles.show', $id));
+        return redirect(route('articles.show', $article->id));
     }
 
     /**
@@ -111,16 +112,17 @@ class ArticleController extends Controller
      * Only delete if confirmed parameter is sent.
      *
      * @param Request $request
-     * @param  int    $id
+     * @param Article $article
      * @return Redirect
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Article $article)
     {
         if ( ! $request->input('confirmed')) {
-            return redirect(route('articles.confirmDelete', $id));
+            return redirect(route('articles.confirmDelete', $article->id));
         }
 
-        Article::findOrFail($id)->delete();
+        $article->delete();
+
         Session::flash('flash_message', 'Article deleted.');
 
         return redirect(route('articles.index'));
@@ -129,13 +131,11 @@ class ArticleController extends Controller
     /**
      * Require confirmation before deleting an article.
      *
-     * @param int $id
+     * @param Article $article
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function confirmDelete($id)
+    public function confirmDelete(Article $article)
     {
-        $article = Article::findOrFail($id);
-
         return view('articles.confirm_delete', compact('article'));
     }
 }

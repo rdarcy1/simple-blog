@@ -41,15 +41,39 @@ class Deviate
      * @param bool  $unsigned
      * @return static
      */
-    public static function make($centre, $deviation, $unsigned = false)
+    public static function make($centre = 0, $deviation = 0, $unsigned = false)
     {
-        $deviate = new static;
+        return (new static)
+            ->setCentre($centre)
+            ->setDeviation($deviation)
+            ->setUnsigned($unsigned);
+    }
 
-        $deviate->setCentre($centre);
-        $deviate->setDeviation($deviation);
-        $deviate->setUnsigned($unsigned);
+    /**
+     * Return new unsigned Deviate instance.
+     *
+     * @param $centre
+     * @param $deviation
+     * @return static
+     */
+    public static function makeUnsigned($centre = 0, $deviation = 0)
+    {
+        return static::make($centre, $deviation, true);
+    }
 
-        return $deviate;
+    /**
+     * Return random float between two limits.
+     *
+     * @param float|int $limit1
+     * @param float|int $limit2
+     * @return float
+     */
+    public static function randomFloat($limit1 = 0, $limit2 = 1)
+    {
+        $min = min($limit1, $limit2);
+        $max = max($limit1, $limit2);
+
+        return ((mt_rand() / mt_getrandmax()) * ($max - $min)) + $min;
     }
 
     /**
@@ -64,10 +88,13 @@ class Deviate
      * Force centre to be integer.
      *
      * @param mixed $centre
+     * @return $this
      */
     public function setCentre($centre)
     {
         $this->centre = round($centre);
+
+        return $this;
     }
 
     /**
@@ -79,13 +106,16 @@ class Deviate
     }
 
     /**
-     * Force deviation to be positive.
+     * Set deviation as a positive value.
      *
      * @param mixed $deviation
+     * @return $this
      */
     public function setDeviation($deviation)
     {
         $this->deviation = abs($deviation);
+
+        return $this;
     }
 
     /**
@@ -98,10 +128,13 @@ class Deviate
 
     /**
      * @param bool $unsigned
+     * @return $this
      */
     public function setUnsigned($unsigned)
     {
         $this->unsigned = ! ! $unsigned;
+
+        return $this;
     }
 
     /**
@@ -136,7 +169,7 @@ class Deviate
      */
     public function randomLinear()
     {
-        return rand($this->min(), $this->max());
+        return mt_rand($this->min(), $this->max());
     }
 
     /**
@@ -147,8 +180,7 @@ class Deviate
      */
     public function randomTriangular()
     {
-        // Random float between 0 and 1
-        $u = rand() / getrandmax();
+        $u = $this::randomFloat(0,1);
         $a = $this->min();
         $b = $this->max();
         $c = $this->centre;

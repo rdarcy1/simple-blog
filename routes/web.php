@@ -11,13 +11,18 @@
 |
 */
 
+// Show articles index as homepage
 Route::get('/', 'ArticleController@index');
 
-Route::get('articles/page/{page}', 'ArticleController@index')->name('articles.page');
-Route::get('articles/{id}/delete', 'ArticleController@confirmDelete')->name('articles.confirmDelete');
+// Articles routing
 Route::resource('articles', 'ArticleController');
+// Article index pagination
+Route::get('articles/page/{page}', 'ArticleController@index')->name('articles.page');
+// Article confirm delete
+Route::get('articles/{article}/delete', 'ArticleController@confirmDelete')->name('articles.confirmDelete');
 
-Route::auth();
+// Authentication routes
 Auth::routes();
 
+// Home route
 Route::get('/home', 'HomeController@index');
